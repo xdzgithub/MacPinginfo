@@ -76,7 +76,7 @@ final class PingManager: ObservableObject {
             try process.run()
         } catch {
             return PingResponse(hostname: host, success: false, latency: nil,
-                              error: "run failed: \(error.localizedDescription)")
+                              error: "run failed")
         }
 
         process.waitUntilExit()
@@ -115,12 +115,10 @@ final class PingManager: ObservableObject {
 
     private nonisolated static func parseError(_ output: String, exitCode: Int32) -> String {
         switch exitCode {
-        case 68:  return "DNS resolution failed"
-        case 69:  return "Network unreachable"
         case 2:   return "Request timeout"
+        case 69:  return "Network unreachable"
         default:  break
         }
-        if output.contains("Unknown host") { return "DNS resolution failed" }
         if output.contains("no route")    { return "Network unreachable" }
         if output.contains("100%")        { return "100% packet loss" }
         if output.contains("0 packets received") { return "no reply" }
