@@ -1,0 +1,41 @@
+/* General */
+"App.Title" = "MacPinginfo";
+"Button.Start" = "开始";
+"Button.Stop" = "停止";
+"Button.Clear" = "清空";
+"Button.Format" = "格式化去重";
+
+/* Input */
+"Input.Label" = "主机地址（每行一个，或用逗号分隔）";
+"Input.Placeholder" = "google.com\n8.8.8.8\napple.com";
+
+/* Interval */
+"Interval.Label" = "间隔:";
+
+/* Status */
+"Status.Waiting" = "等待中";
+"Status.Online" = "在线";
+"Status.Offline" = "离线";
+
+/* Table Headers */
+"Table.Status" = "状态";
+"Table.Hostname" = "主机名 / IP";
+"Table.Sent" = "已发送";
+"Table.Received" = "已接收";
+"Table.PacketLoss" = "丢包率 %";
+"Table.LastLatency" = "当前 (ms)";
+"Table.AvgLatency" = "平均 (ms)";
+"Table.Error" = "错误";
+
+/* Empty State */
+"Empty.Title" = "暂无监控主机";
+"Empty.Subtitle" = "在上方输入主机地址后点击「开始」";
+
+/* Interval Options */
+"Interval.Option1s" = "1 秒";
+"Interval.Option2s" = "2 秒";
+"Interval.Option5s" = "5 秒";
+"Interval.Option10s" = "10 秒";
+
+/* Control Bar */
+"Pinging.Status" = "正在 ping %d 个主机...";

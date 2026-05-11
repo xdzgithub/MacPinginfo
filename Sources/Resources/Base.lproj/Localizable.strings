@@ -1,0 +1,41 @@
+/* General */
+"App.Title" = "MacPinginfo";
+"Button.Start" = "Start";
+"Button.Stop" = "Stop";
+"Button.Clear" = "Clear";
+"Button.Format" = "Format & Deduplicate";
+
+/* Input */
+"Input.Label" = "Hosts (one per line, or comma-separated)";
+"Input.Placeholder" = "google.com\n8.8.8.8\napple.com";
+
+/* Interval */
+"Interval.Label" = "Interval:";
+
+/* Status */
+"Status.Waiting" = "Waiting";
+"Status.Online" = "Online";
+"Status.Offline" = "Offline";
+
+/* Table Headers */
+"Table.Status" = "Status";
+"Table.Hostname" = "Hostname / IP";
+"Table.Sent" = "Sent";
+"Table.Received" = "Received";
+"Table.PacketLoss" = "Packet Loss %";
+"Table.LastLatency" = "Last (ms)";
+"Table.AvgLatency" = "Avg (ms)";
+"Table.Error" = "Error";
+
+/* Empty State */
+"Empty.Title" = "No hosts to monitor";
+"Empty.Subtitle" = "Enter hostnames or IP addresses above and click Start";
+
+/* Interval Options */
+"Interval.Option1s" = "1 second";
+"Interval.Option2s" = "2 seconds";
+"Interval.Option5s" = "5 seconds";
+"Interval.Option10s" = "10 seconds";
+
+/* Control Bar */
+"Pinging.Status" = "Pinging %d host(s)...";
