@@ -27,7 +27,8 @@ DerivedData/
 
 # Swift Package Manager
 .swiftpm/
-*.xcodeproj/
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
 
 # IDE
 .vscode/
