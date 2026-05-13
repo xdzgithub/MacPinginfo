@@ -1,23 +1,15 @@
 # Xcode
 build/
-*.xcuserstate
-*.xcworkspace/xcuserdata/
-*.xcworkspace/xcshareddata/
-xcuserdata/
-*.moved-aside
-*.pbxuser
-!default.pbxuser
-!default.xcworkspace
-!default.xcuserdatad
-!default.xcworkspace
 DerivedData/
 *.hmap
 *.ipa
 *.dSYM.zip
 *.dSYM
+*.moved-aside
 
-# App
-*.app
+# .xcodeproj (keep project.pbxproj, ignore user files)
+*.pbxuser
+!default.pbxuser
 
 # macOS
 .DS_Store
@@ -25,15 +17,11 @@ DerivedData/
 .LSOverride
 ._*
 
+# App
+*.app
+
 # Swift Package Manager
 .swiftpm/
-# Xcode - ignore user data inside .xcodeproj but keep the directory
-*.xcodeproj/project.xcworkspace/
-*.xcodeproj/xcuserdata/
-*.xcodeproj/*.mode1v3
-*.xcodeproj/*.mode2v3
-*.xcodeproj/*.pbxuser
-*.xcodeproj/*~
 
 # IDE
 .vscode/
