@@ -22,6 +22,7 @@
 "Table.Hostname" = "主机名 / IP";
 "Table.Sent" = "已发送";
 "Table.Received" = "已接收";
+"Table.Lost" = "丢包数";
 "Table.PacketLoss" = "丢包率 %";
 "Table.LastLatency" = "当前 (ms)";
 "Table.AvgLatency" = "平均 (ms)";

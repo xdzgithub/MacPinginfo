@@ -39,6 +39,10 @@ struct PingResult: Identifiable, Equatable {
         return Double(sent - received) / Double(sent) * 100.0
     }
 
+    var lost: Int {
+        return max(0, sent - received)
+    }
+
     /// `offlineThreshold` — number of consecutive failures required to flip the
     /// row to `.offline`. Transient single-shot timeouts no longer paint red.
     mutating func recordPing(success: Bool, latency: Double?, error: String?, offlineThreshold: Int = 2) {

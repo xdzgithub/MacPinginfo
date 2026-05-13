@@ -22,6 +22,7 @@
 "Table.Hostname" = "Hostname / IP";
 "Table.Sent" = "Sent";
 "Table.Received" = "Received";
+"Table.Lost" = "Lost";
 "Table.PacketLoss" = "Packet Loss %";
 "Table.LastLatency" = "Last (ms)";
 "Table.AvgLatency" = "Avg (ms)";

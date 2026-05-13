@@ -49,6 +49,12 @@ struct PingTableView: View {
             }
             .width(min: 60, ideal: 80)
 
+            TableColumn(L10n.string("Table.Lost")) { result in
+                Text("\(result.lost)")
+                    .foregroundColor(result.lost > 0 ? .orange : .primary)
+            }
+            .width(min: 50, ideal: 60)
+
             TableColumn(L10n.string("Table.PacketLoss")) { result in
                 Text(String(format: "%.1f%%", result.packetLoss))
                     .foregroundColor(packetLossColor(result.packetLoss))
