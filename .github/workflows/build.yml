@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            *
+            .github
+            MacPinginfo.xcodeproj
 
       - name: Debug
         run: |
