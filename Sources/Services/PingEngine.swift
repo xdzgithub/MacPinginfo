@@ -4,10 +4,7 @@ import Darwin
 // MARK: - PingEngine
 //
 // One persistent /sbin/ping process per host, reading stdout line-by-line.
-// This eliminates the false-timeout problem caused by spawn-per-ping:
-// the kernel ICMP stack delivers replies to the same socket that sent them,
-// and the streaming parser picks up every line as it arrives — no reply is
-// ever lost to a process-exit race condition.
+// Sent count is derived exclusively from icmp_seq, never from error lines.
 
 @MainActor
 final class PingEngine: ObservableObject {
@@ -18,6 +15,14 @@ final class PingEngine: ObservableObject {
     private var handlers: [String: DispatchSourceRead] = [:]
     private var outputBuffers: [String: String] = [:]
     private let resolver = DNSResolver()
+
+    // icmp_seq tracking: next expected seq per host.
+    // When we see a reply, sent++ always. received++ only on success.
+    private var hostNextSeq: [String: UInt16] = [:]
+    private var hostLastSeenSeq: [String: UInt16] = [:]
+
+    // Heartbeat timer to detect timeout gaps when host is unreachable.
+    private var heartbeatTimers: [String: DispatchSourceTimer] = [:]
 
     var pingInterval: TimeInterval = 1.0
 
@@ -53,12 +58,14 @@ final class PingEngine: ObservableObject {
 
     func stop() {
         isRunning = false
-        for (_, proc) in processes {
-            proc.terminate()
-        }
+        for (_, proc) in processes { proc.terminate() }
+        for (_, t) in heartbeatTimers { t.cancel() }
         processes.removeAll()
         handlers.removeAll()
         outputBuffers.removeAll()
+        heartbeatTimers.removeAll()
+        hostNextSeq.removeAll()
+        hostLastSeenSeq.removeAll()
     }
 
     func clear() {
@@ -69,7 +76,7 @@ final class PingEngine: ObservableObject {
     // MARK: - Persistent ping process
 
     private func spawnStreamingPing(for r: ResolvedHost) {
-        guard let _ = r.ipv4 else { return }
+        guard r.ipv4 != nil else { return }
 
         let proc = Process()
         proc.executableURL = URL(fileURLWithPath: "/sbin/ping")
@@ -90,7 +97,6 @@ final class PingEngine: ObservableObject {
         source.setEventHandler { [weak self] in
             let data = pipe.fileHandleForReading.availableData
             guard !data.isEmpty else {
-                // EOF — process ended
                 Task { @MainActor [weak self] in
                     self?.handleProcessEnd(hostname: r.hostname)
                 }
@@ -107,6 +113,7 @@ final class PingEngine: ObservableObject {
 
         do {
             try proc.run()
+            startHeartbeat(for: r.hostname)
         } catch {
             Task { @MainActor [weak self] in
                 guard let self = self else { return }
@@ -121,11 +128,45 @@ final class PingEngine: ObservableObject {
         source.resume()
     }
 
+    // MARK: - Heartbeat: detect missing icmp_seq after timeout
+
+    private func startHeartbeat(for hostname: String) {
+        let timer = DispatchSource.makeTimerSource(queue: .global(qos: .userInitiated))
+        heartbeatTimers[hostname] = timer
+        // Fire slightly after each expected ping interval
+        let intervalNs = UInt64((pingInterval + 0.5) * 1_000_000_000)
+        timer.schedule(deadline: .now() + .seconds(Int(pingInterval)), repeating: .nanoseconds(Int(intervalNs)))
+        timer.setEventHandler { [weak self] in
+            Task { @MainActor [weak self] in
+                self?.checkHeartbeat(hostname: hostname)
+            }
+        }
+        timer.resume()
+    }
+
+    private func checkHeartbeat(hostname: String) {
+        guard isRunning else { return }
+        let next = hostNextSeq[hostname] ?? 0
+        let last = hostLastSeenSeq[hostname] ?? 0
+        guard next > 0 else { return }
+
+        // If next hasn't advanced, packets between last and next are timed out.
+        // gap = next - last (accounting for uint16 wrap)
+        let gap = Int(next &- last)
+        if gap > 0 {
+            for _ in 0..<gap {
+                applyOne(hostname: hostname, success: false, latency: nil, error: "timeout")
+            }
+            hostNextSeq[hostname] = next
+        }
+    }
+
+    // MARK: - Output parsing
+
     private func parseOutput(hostname: String, chunk: String) {
         guard isRunning else { return }
         outputBuffers[hostname, default: ""].append(chunk)
 
-        // Process line by line — keep incomplete last line in buffer
         var buffer = outputBuffers[hostname] ?? ""
         var lines = buffer.components(separatedBy: "\n")
         if !buffer.hasSuffix("\n") {
@@ -138,22 +179,47 @@ final class PingEngine: ObservableObject {
         for line in lines {
             let trimmed = line.trimmingCharacters(in: .whitespaces)
             guard !trimmed.isEmpty else { continue }
-            if let latency = parseTimeLine(trimmed) {
-                applyOne(hostname: hostname, success: true, latency: latency, error: nil)
-            } else if isErrorLine(trimmed) {
-                applyOne(hostname: hostname, success: false, latency: nil, error: trimmed)
+            if let (seq, latency) = parseReplyLine(trimmed) {
+                handleReply(hostname: hostname, seq: seq, latency: latency)
             }
         }
     }
 
-    private func handleProcessEnd(hostname: String) {
-        // If the process unexpectedly exits while running, mark current result as timeout.
-        guard isRunning, let proc = processes[hostname] else { return }
-        let code = proc.terminationStatus
-        if code != 0 {
-            applyOne(hostname: hostname, success: false, latency: nil,
-                    error: "process exited: \(code)")
+    private func handleReply(hostname: String, seq: UInt16, latency: Double?) {
+        let next = hostNextSeq[hostname] ?? 0
+
+        if next == 0 {
+            // First reply ever — can't infer gap from before it.
+            hostNextSeq[hostname] = seq &+ 1
+            hostLastSeenSeq[hostname] = seq
+            applyOne(hostname: hostname, success: true, latency: latency, error: nil)
+            return
         }
+
+        // Wrap-aware gap: how many seq numbers between last and this one?
+        let last = hostLastSeenSeq[hostname] ?? next
+        let gap = Int(seq &- last)
+
+        if seq == next {
+            // In-order expected reply: normal success.
+            hostNextSeq[hostname] = seq &+ 1
+            hostLastSeenSeq[hostname] = seq
+            applyOne(hostname: hostname, success: true, latency: latency, error: nil)
+        } else if seq > next {
+            // Jumped ahead: packets in [next, seq) are lost.
+            for _ in 0..<gap {
+                applyOne(hostname: hostname, success: false, latency: nil, error: "timeout")
+            }
+            hostNextSeq[hostname] = seq &+ 1
+            hostLastSeenSeq[hostname] = seq
+            applyOne(hostname: hostname, success: true, latency: latency, error: nil)
+        }
+        // seq < next: late/duplicate reply — ignore.
+    }
+
+    private func handleProcessEnd(hostname: String) {
+        heartbeatTimers[hostname]?.cancel()
+        heartbeatTimers.removeValue(forKey: hostname)
         processes.removeValue(forKey: hostname)
         handlers.removeValue(forKey: hostname)
         outputBuffers.removeValue(forKey: hostname)
@@ -161,36 +227,36 @@ final class PingEngine: ObservableObject {
 
     // MARK: - Line parsing
 
-    private func parseTimeLine(_ line: String) -> Double? {
-        // Matches: "64 bytes from 8.8.8.8: icmp_seq=0 ttl=117 time=11.3 ms"
-        // Also handles: "time=11.3 ms" variants
+    private func parseReplyLine(_ line: String) -> (UInt16, Double?)? {
+        guard line.contains("bytes from") else { return nil }
+
+        var seq: UInt16 = 0
+        var latency: Double?
+
+        if let rSeq = line.range(of: #"icmp_seq=(\d+)"#, options: .regularExpression) {
+            let num = line[rSeq].dropFirst("icmp_seq=".count)
+            seq = UInt16(num) ?? 0
+        } else {
+            return nil
+        }
+
         let patterns = [
             #"time[=<]?\s*([0-9]+\.?[0-9]*)\s*ms"#,
             #"time[=<]?\s*<([0-9]+\.?[0-9]*)\s*ms"#,
-            #"time[=<]?\s*([0-9]+\.?[0-9]*)\s*msec"#,
         ]
         for pat in patterns {
-            guard let re = try? NSRegularExpression(pattern: pat, options: .caseInsensitive) else { continue }
-            let range = NSRange(line.startIndex..., in: line)
-            guard let m = re.firstMatch(in: line, range: range),
-                  m.numberOfRanges > 1,
-                  let r = Range(m.range(at: 1), in: line),
-                  let v = Double(line[r]), v >= 0 else { continue }
-            return v
+            if let re = try? NSRegularExpression(pattern: pat, options: .caseInsensitive) {
+                let range = NSRange(line.startIndex..., in: line)
+                if let m = re.firstMatch(in: line, range: range), m.numberOfRanges > 1,
+                   let r = Range(m.range(at: 1), in: line),
+                   let v = Double(line[r]), v >= 0 {
+                    latency = v
+                    break
+                }
+            }
         }
-        return nil
-    }
 
-    private func isErrorLine(_ line: String) -> Bool {
-        // Skip summary/statistics lines
-        if line.hasPrefix("---")          { return false }
-        if line.hasPrefix("PING ")        { return false }
-        if line.hasPrefix("ping: ")       { return true }
-        if line.hasPrefix("Request timeout") { return true }
-        if line.contains("Unknown host") { return true }
-        if line.contains("no route")     { return true }
-        if line.contains("Destination Host Unreachable") { return true }
-        return false
+        return (seq, latency)
     }
 
     // MARK: - Result application
