@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-A macOS native concurrent multi-host ICMP ping monitoring tool.
+A macOS-native concurrent multi-host ICMP ping monitoring tool, inspired by PingInfoView on Windows, designed for network engineers on Mac.
 
 ## Features
 
