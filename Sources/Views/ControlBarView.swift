@@ -6,7 +6,7 @@ struct ControlBarView: View {
     @Binding var pingInterval: TimeInterval
 
     var body: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 12) {
             Button(action: {
                 if engine.isRunning {
                     engine.stop()
@@ -59,21 +59,20 @@ struct ControlBarView: View {
                     }
                 }
                 .pickerStyle(.menu)
-                .frame(width: 140)
+                .labelsHidden()
+                .frame(width: 120)
             }
+            .fixedSize()
 
             Spacer()
 
-            if engine.isRunning {
-                ProgressView()
-                    .scaleEffect(0.6)
-                    .frame(width: 16, height: 16)
-                Text(L10n.format("Pinging.Status", engine.results.count))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
+            Text(L10n.format("Pinging.Status", engine.results.count))
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .opacity(engine.isRunning ? 1 : 0)
         }
         .padding(.horizontal, 4)
+        .frame(minHeight: 32)
     }
 
     private var intervalOptions: [(String, TimeInterval)] {
