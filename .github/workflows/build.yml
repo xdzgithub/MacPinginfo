@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,14 +17,6 @@ jobs:
           sparse-checkout: |
             .github
             MacPinginfo.xcodeproj
-
-      - name: Debug
-        run: |
-          ls -la
-          ls -la MacPinginfo.xcodeproj/
-          git ls-files --stage MacPinginfo.xcodeproj/
-          git status MacPinginfo.xcodeproj/
-          file MacPinginfo.xcodeproj/project.pbxproj
 
       - name: Build
         run: xcodebuild -scheme MacPinginfo -configuration Release build -derivedDataPath DerivedData
