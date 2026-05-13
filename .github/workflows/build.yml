@@ -12,6 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Debug
+        run: |
+          ls -la
+          ls -la MacPinginfo.xcodeproj/
+
       - name: Build
         run: xcodebuild -scheme MacPinginfo -configuration Release build -derivedDataPath DerivedData
 
