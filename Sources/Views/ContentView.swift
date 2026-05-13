@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var pingManager = PingManager()
+    @StateObject private var engine = PingEngine()
     @State private var hostInput: String = ""
     @AppStorage("savedHosts") private var savedHosts: String = ""
     @State private var pingInterval: TimeInterval = 1.0
@@ -26,17 +26,17 @@ struct ContentView: View {
 
             Divider()
 
-            ControlBarView(pingManager: pingManager, hostInput: $hostInput, pingInterval: $pingInterval)
+            ControlBarView(engine: engine, hostInput: $hostInput, pingInterval: $pingInterval)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
                 .background(Color(NSColor.controlBackgroundColor))
 
             Divider()
 
-            if pingManager.results.isEmpty {
+            if engine.results.isEmpty {
                 emptyStateView
             } else {
-                PingTableView(results: pingManager.results)
+                PingTableView(results: engine.results)
                     .padding(0)
             }
         }

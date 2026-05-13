@@ -1,37 +1,48 @@
 import SwiftUI
 
 struct ControlBarView: View {
-    @ObservedObject var pingManager: PingManager
+    @ObservedObject var engine: PingEngine
     @Binding var hostInput: String
     @Binding var pingInterval: TimeInterval
 
     var body: some View {
         HStack(spacing: 16) {
             Button(action: {
-                if pingManager.isRunning {
-                    pingManager.stopPinging()
+                if engine.isRunning {
+                    engine.stop()
                 } else {
-                    pingManager.pingInterval = pingInterval
-                    pingManager.startPinging(hosts: parsedHosts)
+                    engine.pingInterval = pingInterval
+                    engine.start(hosts: parsedHosts)
                 }
             }) {
                 Label(
-                    pingManager.isRunning ? L10n.string("Button.Stop") : L10n.string("Button.Start"),
-                    systemImage: pingManager.isRunning ? "stop.fill" : "play.fill"
+                    engine.isRunning ? L10n.string("Button.Stop") : L10n.string("Button.Start"),
+                    systemImage: engine.isRunning ? "stop.fill" : "play.fill"
                 )
             }
             .buttonStyle(.borderedProminent)
-            .tint(pingManager.isRunning ? .red : .green)
-            .keyboardShortcut(pingManager.isRunning ? "s" : "r", modifiers: .command)
+            .tint(engine.isRunning ? .red : .green)
+            .keyboardShortcut(engine.isRunning ? "s" : "r", modifiers: .command)
 
             Button(action: {
-                pingManager.clearResults()
+                engine.clear()
                 hostInput = ""
             }) {
                 Label(L10n.string("Button.Clear"), systemImage: "trash")
             }
             .buttonStyle(.bordered)
             .keyboardShortcut("k", modifiers: .command)
+
+            Button(action: {
+                if let url = engine.exportCSV() {
+                    NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: url.deletingLastPathComponent().path)
+                }
+            }) {
+                Label("Export CSV", systemImage: "square.and.arrow.up")
+            }
+            .buttonStyle(.bordered)
+            .disabled(engine.results.isEmpty)
+            .keyboardShortcut("e", modifiers: .command)
 
             Divider()
                 .frame(height: 20)
@@ -53,11 +64,11 @@ struct ControlBarView: View {
 
             Spacer()
 
-            if pingManager.isRunning {
+            if engine.isRunning {
                 ProgressView()
                     .scaleEffect(0.6)
                     .frame(width: 16, height: 16)
-                Text(L10n.format("Pinging.Status", pingManager.results.count))
+                Text(L10n.format("Pinging.Status", engine.results.count))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }

@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		26FC48A0080BC39EB90E1C94 /* PingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6630C5B93BC06FF86A8C824B /* PingViewModel.swift */; };
+		272A21B8FB034DEBD770F063 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53BF53CECCBB72C311918988 /* Assets.xcassets */; };
+		30D54FD969370AC98A09B37B /* Localize.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F3484A25F665D54E4650DC /* Localize.swift */; };
+		6A7AE8FD77297CBAE94C8EF8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE13369C0E4B12FDA420AA90 /* Localizable.strings */; };
+		7140856918CA5E480AE856B6 /* HostInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17264DEE65CBCE0D7F118CE4 /* HostInputView.swift */; };
+		72D64B770FBF11D711271A84 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624573F5B76B9B5EFC9A85D5 /* ContentView.swift */; };
+		8812605737F073F6D3954BF8 /* PingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D851446E2D5569189A034D8 /* PingManager.swift */; };
+		B1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift */; };
+		C1D2E3F4A5B6C7D8E9F0A1B /* PingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C6D7E8F9A0B1 /* PingEngine.swift */; };
+		D1E2EDF47580856574359A63 /* MacPinginfoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277BF04FDC018F187C2DD894 /* MacPinginfoApp.swift */; };
+		D6265F081096F86500EECCFF /* PingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD1B8EBB3645D501AC41C3D /* PingResult.swift */; };
+		D6CBBE833F17BEE5D2C6CB92 /* ControlBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA87667BA58DF3B5CD0F20D /* ControlBarView.swift */; };
+		E925E2501F6E1151B333F274 /* HostFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB25EF929D7C1DEEB2FCB950 /* HostFormatter.swift */; };
+		EEE1BE87252F8159521B37BD /* PingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4141A3B83BD842828ED2D389 /* PingTableView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		17264DEE65CBCE0D7F118CE4 /* HostInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostInputView.swift; sourceTree = "<group>"; };
+		20BE66D416E22748AB2AEC86 /* MacPinginfo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacPinginfo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		277BF04FDC018F187C2DD894 /* MacPinginfoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPinginfoApp.swift; sourceTree = "<group>"; };
+		4141A3B83BD842828ED2D389 /* PingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingTableView.swift; sourceTree = "<group>"; };
+		53BF53CECCBB72C311918988 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		624573F5B76B9B5EFC9A85D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6630C5B93BC06FF86A8C824B /* PingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingViewModel.swift; sourceTree = "<group>"; };
+		6FD1B8EBB3645D501AC41C3D /* PingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingResult.swift; sourceTree = "<group>"; };
+		811C9229C26F9D4877E7A2CA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		9CEEAB389098C7F6CD8D6FEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9D851446E2D5569189A034D8 /* PingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingManager.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
+		D1E2F3A4B5C6D7E8F9A0B1 /* PingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingEngine.swift; sourceTree = "<group>"; };
+		DB25EF929D7C1DEEB2FCB950 /* HostFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostFormatter.swift; sourceTree = "<group>"; };
+		EBA87667BA58DF3B5CD0F20D /* ControlBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBarView.swift; sourceTree = "<group>"; };
+		F8F3484A25F665D54E4650DC /* Localize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localize.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		10F3FB43E53931DB05EEB642 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				53BF53CECCBB72C311918988 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		225BB23FA40EF67A8F5E8D1E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6630C5B93BC06FF86A8C824B /* PingViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		3C3AD9F2DFE59829EFCC587A = {
+			isa = PBXGroup;
+			children = (
+				10F3FB43E53931DB05EEB642 /* Resources */,
+				5A4A8F4BC38A2E7C14D4D4DD /* Sources */,
+				904579B435E53BDC35450DC1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4C852523CD76D4D1900CC59D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				277BF04FDC018F187C2DD894 /* MacPinginfoApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		5A4A8F4BC38A2E7C14D4D4DD /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4C852523CD76D4D1900CC59D /* App */,
+				A9CCA6DC328891DA6F1D6B9C /* Models */,
+				8C5D80EA36BFEC932BB1D58B /* Resources */,
+				D4DC16951E755709F6F80B37 /* Services */,
+				225BB23FA40EF67A8F5E8D1E /* ViewModels */,
+				E8E9137FBE8E503AB1582C61 /* Views */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		8C5D80EA36BFEC932BB1D58B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CE13369C0E4B12FDA420AA90 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		904579B435E53BDC35450DC1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				20BE66D416E22748AB2AEC86 /* MacPinginfo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A9CCA6DC328891DA6F1D6B9C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DB25EF929D7C1DEEB2FCB950 /* HostFormatter.swift */,
+				F8F3484A25F665D54E4650DC /* Localize.swift */,
+				6FD1B8EBB3645D501AC41C3D /* PingResult.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D4DC16951E755709F6F80B37 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift */,
+				D1E2F3A4B5C6D7E8F9A0B1 /* PingEngine.swift */,
+				9D851446E2D5569189A034D8 /* PingManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E8E9137FBE8E503AB1582C61 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				624573F5B76B9B5EFC9A85D5 /* ContentView.swift */,
+				EBA87667BA58DF3B5CD0F20D /* ControlBarView.swift */,
+				17264DEE65CBCE0D7F118CE4 /* HostInputView.swift */,
+				4141A3B83BD842828ED2D389 /* PingTableView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3D47DD7A5ADDD5FF269233E4 /* MacPinginfo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB190278F4D59866A77309BE /* Build configuration list for PBXNativeTarget "MacPinginfo" */;
+			buildPhases = (
+				7736ED4D9A2AEA4A0722183F /* Sources */,
+				4C2C25768C6EE6318A38EB2C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacPinginfo;
+			packageProductDependencies = (
+			);
+			productName = MacPinginfo;
+			productReference = 20BE66D416E22748AB2AEC86 /* MacPinginfo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		49A32AB66A64034435434557 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					3D47DD7A5ADDD5FF269233E4 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = B84C2D6871C17289A003DFEF /* Build configuration list for PBXProject "MacPinginfo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+				"zh-Hans",
+			);
+			mainGroup = 3C3AD9F2DFE59829EFCC587A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 904579B435E53BDC35450DC1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3D47DD7A5ADDD5FF269233E4 /* MacPinginfo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4C2C25768C6EE6318A38EB2C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				272A21B8FB034DEBD770F063 /* Assets.xcassets in Resources */,
+				6A7AE8FD77297CBAE94C8EF8 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7736ED4D9A2AEA4A0722183F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72D64B770FBF11D711271A84 /* ContentView.swift in Sources */,
+				D6CBBE833F17BEE5D2C6CB92 /* ControlBarView.swift in Sources */,
+				B1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift in Sources */,
+				E925E2501F6E1151B333F274 /* HostFormatter.swift in Sources */,
+				7140856918CA5E480AE856B6 /* HostInputView.swift in Sources */,
+				C1D2E3F4A5B6C7D8E9F0A1B /* PingEngine.swift in Sources */,
+				30D54FD969370AC98A09B37B /* Localize.swift in Sources */,
+				D1E2EDF47580856574359A63 /* MacPinginfoApp.swift in Sources */,
+				8812605737F073F6D3954BF8 /* PingManager.swift in Sources */,
+				D6265F081096F86500EECCFF /* PingResult.swift in Sources */,
+				EEE1BE87252F8159521B37BD /* PingTableView.swift in Sources */,
+				26FC48A0080BC39EB90E1C94 /* PingViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CE13369C0E4B12FDA420AA90 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9CEEAB389098C7F6CD8D6FEF /* Base */,
+				811C9229C26F9D4877E7A2CA /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0AF8F3D8C9EB254A3EDA1D17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
+				CODE_SIGN_ENTITLEMENTS = MacPinginfo.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 2.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = MacPinginfo;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		9085EA1C133F9332D81F680D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.macpinginfo.MacPinginfo;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		AB4BA058E734CDC23C482F90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.macpinginfo.MacPinginfo;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Debug;
+		};
+		F79A4552CC4C189F9AD36602 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
+				CODE_SIGN_ENTITLEMENTS = MacPinginfo.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 2.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = MacPinginfo;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B84C2D6871C17289A003DFEF /* Build configuration list for PBXProject "MacPinginfo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AF8F3D8C9EB254A3EDA1D17 /* Debug */,
+				F79A4552CC4C189F9AD36602 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BB190278F4D59866A77309BE /* Build configuration list for PBXNativeTarget "MacPinginfo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB4BA058E734CDC23C482F90 /* Debug */,
+				9085EA1C133F9332D81F680D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 49A32AB66A64034435434557 /* Project object */;
+}
