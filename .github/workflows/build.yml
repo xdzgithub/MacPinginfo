@@ -24,6 +24,7 @@ jobs:
           ls -la MacPinginfo.xcodeproj/
           git ls-files --stage MacPinginfo.xcodeproj/
           git status MacPinginfo.xcodeproj/
+          file MacPinginfo.xcodeproj/project.pbxproj
 
       - name: Build
         run: xcodebuild -scheme MacPinginfo -configuration Release build -derivedDataPath DerivedData
