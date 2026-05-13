@@ -1,6 +1,38 @@
 # MacPinginfo
 
-A macOS native concurrent multi-host ICMP ping monitoring tool.
+[English](#english) | [中文](#中文)
+
+<a name="english"></a>
+
+## Features
+
+- Ping multiple hosts simultaneously with a persistent process per host
+- Real-time latency monitoring and packet loss statistics
+- CSV export support
+- Adjustable ping interval (1s / 2s / 5s / 10s)
+- Automatic DNS resolution
+- macOS-native SwiftUI interface
+
+## Requirements
+
+- macOS 13.0+
+- Xcode 15.0+
+
+## Build
+
+```bash
+xcodebuild -scheme MacPinginfo -configuration Release build
+```
+
+The built app is located at `build/Release/MacPinginfo.app`.
+
+## License
+
+MIT License
+
+---
+
+<a name="中文"></a>
 
 ## 功能特点
 
