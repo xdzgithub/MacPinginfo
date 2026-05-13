@@ -12,8 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          sparse-checkout: ""
-          sparse-checkout-cone-mode: false
+          fetch-depth: 0
+          filter: ""
 
       - name: Debug
         run: |
