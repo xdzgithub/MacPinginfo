@@ -12,9 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          sparse-checkout: |
-            .github
-            MacPinginfo.xcodeproj
+          sparse-checkout: ""
+          sparse-checkout-cone-mode: false
 
       - name: Debug
         run: |
