@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-仿制 Windows 平台 PingInfoView 的 macOS 原生并发多主机 ICMP ping 监控工具，专为 Mac 网络工程师打造。
+受 Windows 平台 PingInfoView 启发的 macOS 原生并发多主机 ICMP ping 监控工具，专为 Mac 网络工程师打造。
 
 ## 功能特点
 
