@@ -1,0 +1,37 @@
+# Xcode
+build/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/
+xcuserdata/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+!default.xcworkspace
+!default.xcuserdatad
+!default.xcworkspace
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# App
+*.app
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Swift Package Manager
+.swiftpm/
+*.xcodeproj/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
