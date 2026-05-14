@@ -4,6 +4,8 @@
 
 Inspired by PingInfoView on Windows, a macOS-native concurrent multi-host ICMP ping monitoring tool designed for network engineers on Mac.
 
+<img width="800" height="450" alt="image" src="https://github.com/user-attachments/assets/9db17c0a-4fe7-4ba2-b951-3d5b3c876779" />
+
 ## Features
 
 - Ping multiple hosts simultaneously with a persistent process per host
