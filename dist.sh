@@ -2,7 +2,7 @@
 set -e
 
 APP_NAME="MacPinginfo"
-PROJECT_DIR="$(dirname "$0")"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BUILD_DIR="$PROJECT_DIR/dist"
 ARCHIVE="$PROJECT_DIR/${APP_NAME}.zip"
 
@@ -26,6 +26,7 @@ fi
 echo "Found app: $APP"
 
 # Copy .app to dist folder
+mkdir -p "$BUILD_DIR"
 cp -R "$APP" "$BUILD_DIR/"
 
 # Create README next to the app

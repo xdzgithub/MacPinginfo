@@ -4,12 +4,15 @@ enum PingStatus: String {
     case waiting
     case online
     case offline
+    /// The entered host failed syntax validation and is never probed.
+    case invalid
 
     var localized: String {
         switch self {
         case .waiting: return L10n.string("Status.Waiting")
         case .online: return L10n.string("Status.Online")
         case .offline: return L10n.string("Status.Offline")
+        case .invalid: return L10n.string("Status.Invalid")
         }
     }
 }
@@ -19,6 +22,8 @@ private let maxLatencyHistory = 1000
 struct PingResult: Identifiable, Equatable {
     let id = UUID()
     var hostname: String
+    /// True when the entered host failed syntax validation and is never pinged.
+    var isInvalid: Bool = false
     var resolvedIP: String? = nil
     var status: PingStatus = .waiting
     var sent: Int = 0
@@ -29,8 +34,9 @@ struct PingResult: Identifiable, Equatable {
     var consecutiveFailures: Int = 0
     private var latencyBuffer: [Double] = []
 
-    init(hostname: String, status: PingStatus = .waiting) {
+    init(hostname: String, isInvalid: Bool = false, status: PingStatus = .waiting) {
         self.hostname = hostname
+        self.isInvalid = isInvalid
         self.status = status
     }
 

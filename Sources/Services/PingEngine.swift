@@ -13,6 +13,8 @@ import Darwin
 final class PingEngine: ObservableObject {
     @Published private(set) var results: [PingResult] = []
     @Published private(set) var isRunning: Bool = false
+    /// When on, reachable (online) hosts are kept at the top after every ping.
+    @Published private(set) var pinOnlineToTop: Bool = false
 
     private var processes: [String: Process] = [:]
     private var handlers: [String: DispatchSourceRead] = [:]
@@ -27,11 +29,31 @@ final class PingEngine: ObservableObject {
         guard !isRunning else { return }
         guard !hosts.isEmpty else { return }
 
-        results = hosts.map { PingResult(hostname: $0, status: .waiting) }
+        // Collapse duplicates up front. Each host gets one process keyed by
+        // hostname, so a repeated entry would overwrite the dictionary slot and
+        // orphan the earlier process (never terminated by stop()).
+        var seen = Set<String>()
+        let uniqueHosts = hosts.filter { seen.insert($0.lowercased()).inserted }
+
+        let invalidSuffix = L10n.string("Host.InvalidSuffix")
+        var validHosts: [String] = []
+        results = uniqueHosts.map { host in
+            if HostValidator.isValid(host) {
+                validHosts.append(host)
+                return PingResult(hostname: host, status: .waiting)
+            }
+            return PingResult(hostname: host + invalidSuffix, isInvalid: true, status: .invalid)
+        }
+        reorderForPin()
+
+        // Nothing to probe — every entry failed syntax validation. Keep the rows
+        // visible but stay idle, rather than entering a run state with no
+        // processes (which would leave the UI stuck on "Stop" forever).
+        guard !validHosts.isEmpty else { return }
         isRunning = true
 
         Task {
-            let resolved = await resolver.resolveAll(hosts)
+            let resolved = await resolver.resolveAll(validHosts)
             guard isRunning else { return }
 
             for r in resolved {
@@ -43,6 +65,7 @@ final class PingEngine: ObservableObject {
                                            offlineThreshold: 2)
                 }
             }
+            reorderForPin()
 
             let okHosts = resolved.filter { $0.ipv4 != nil }
             for r in okHosts where isRunning {
@@ -64,6 +87,27 @@ final class PingEngine: ObservableObject {
     func clear() {
         stop()
         results = []
+    }
+
+    // MARK: - Row ordering
+
+    /// Toggle the "reachable hosts on top" mode. Turning it off freezes the
+    /// current arrangement instead of restoring the original input order.
+    func togglePinOnlineToTop() {
+        pinOnlineToTop.toggle()
+        if pinOnlineToTop { reorderForPin() }
+    }
+
+    /// Stable partition: online rows first, everything else after, preserving
+    /// each group's existing relative order.
+    private func reorderForPin() {
+        guard pinOnlineToTop else { return }
+        let online = results.filter { $0.status == .online }
+        guard !online.isEmpty, online.count < results.count else { return }
+        let reordered = online + results.filter { $0.status != .online }
+        if reordered.map(\.id) != results.map(\.id) {
+            results = reordered
+        }
     }
 
     // MARK: - Persistent ping process
@@ -200,27 +244,43 @@ final class PingEngine: ObservableObject {
         if let idx = results.firstIndex(where: { $0.hostname == hostname }) {
             results[idx].recordPing(success: success, latency: latency,
                                    error: error, offlineThreshold: 2)
+            reorderForPin()
         }
     }
 
     // MARK: - CSV export
 
-    func exportCSV() -> URL? {
+    /// The current results rendered as CSV text.
+    func csvContent() -> String {
         var csv = "Hostname,ResolvedIP,Status,Sent,Received,Lost,Loss%,LastLatency,AvgLatency,LastError\n"
         for r in results {
             let loss = r.sent > 0 ? String(format: "%.1f", r.packetLoss) : "0.0"
             let lat  = r.lastLatency.map   { String(format: "%.2f", $0) } ?? ""
             let avg  = r.averageLatency.map { String(format: "%.2f", $0) } ?? ""
-            let err  = (r.lastError ?? "").replacingOccurrences(of: ",", with: ";")
-            csv += "\(r.hostname),\(r.resolvedIP ?? ""),\(r.status.rawValue),\(r.sent),\(r.received),\(r.lost),\(loss)%,\(lat),\(avg),\(err)\n"
+            csv += "\(Self.csvField(r.hostname)),\(Self.csvField(r.resolvedIP ?? "")),"
+                 + "\(r.status.rawValue),\(r.sent),\(r.received),\(r.lost),"
+                 + "\(loss)%,\(lat),\(avg),\(Self.csvField(r.lastError ?? ""))\n"
         }
-        let url = FileManager.default.temporaryDirectory
-            .appendingPathComponent("MacPinginfo_\(Int(Date().timeIntervalSince1970)).csv")
+        return csv
+    }
+
+    /// Writes the current results to a user-chosen `url`. Returns false if the
+    /// write fails (e.g. no permission), so the caller can surface an error.
+    @discardableResult
+    func exportCSV(to url: URL) -> Bool {
         do {
-            try csv.write(to: url, atomically: true, encoding: .utf8)
-            return url
+            try csvContent().write(to: url, atomically: true, encoding: .utf8)
+            return true
         } catch {
-            return nil
+            return false
         }
+    }
+
+    /// Quotes a field when it contains a comma, quote, or newline (RFC 4180).
+    private static func csvField(_ value: String) -> String {
+        guard value.contains(where: { $0 == "," || $0 == "\"" || $0 == "\n" || $0 == "\r" }) else {
+            return value
+        }
+        return "\"" + value.replacingOccurrences(of: "\"", with: "\"\"") + "\""
     }
 }

@@ -1,9 +1,12 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ControlBarView: View {
     @ObservedObject var engine: PingEngine
     @Binding var hostInput: String
     @Binding var pingInterval: TimeInterval
+
+    @State private var exportFailed = false
 
     var body: some View {
         HStack(spacing: 12) {
@@ -33,11 +36,7 @@ struct ControlBarView: View {
             .buttonStyle(.bordered)
             .keyboardShortcut("k", modifiers: .command)
 
-            Button(action: {
-                if let url = engine.exportCSV() {
-                    NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: url.deletingLastPathComponent().path)
-                }
-            }) {
+            Button(action: exportCSV) {
                 Label("Export CSV", systemImage: "square.and.arrow.up")
             }
             .buttonStyle(.bordered)
@@ -66,13 +65,39 @@ struct ControlBarView: View {
 
             Spacer()
 
-            Text(L10n.format("Pinging.Status", engine.results.count))
+            Text(L10n.format("Pinging.Status", engine.results.filter { !$0.isInvalid }.count))
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .opacity(engine.isRunning ? 1 : 0)
         }
         .padding(.horizontal, 4)
         .frame(minHeight: 32)
+        .alert(L10n.string("Export.FailedTitle"), isPresented: $exportFailed) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(L10n.string("Export.FailedMessage"))
+        }
+    }
+
+    /// Ask the user where to save, then write the CSV there.
+    private func exportCSV() {
+        let panel = NSSavePanel()
+        panel.title = L10n.string("Export.PanelTitle")
+        panel.nameFieldStringValue = "MacPinginfo_\(Self.timestamp()).csv"
+        panel.allowedContentTypes = [.commaSeparatedText]
+        panel.canCreateDirectories = true
+        panel.isExtensionHidden = false
+
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        if !engine.exportCSV(to: url) {
+            exportFailed = true
+        }
+    }
+
+    private static func timestamp() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        return formatter.string(from: Date())
     }
 
     private var intervalOptions: [(String, TimeInterval)] {

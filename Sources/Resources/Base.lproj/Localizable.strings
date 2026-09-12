@@ -16,6 +16,10 @@
 "Status.Waiting" = "Waiting";
 "Status.Online" = "Online";
 "Status.Offline" = "Offline";
+"Status.Invalid" = "Invalid";
+
+/* Host validation */
+"Host.InvalidSuffix" = " (invalid)";
 
 /* Table Headers */
 "Table.Status" = "Status";
@@ -27,6 +31,12 @@
 "Table.LastLatency" = "Last (ms)";
 "Table.AvgLatency" = "Avg (ms)";
 "Table.Error" = "Error";
+"Table.PinHelp" = "Keep reachable hosts pinned to the top";
+
+/* Export */
+"Export.PanelTitle" = "Export Ping Results";
+"Export.FailedTitle" = "Export Failed";
+"Export.FailedMessage" = "The file could not be saved. Check the location and try again.";
 
 /* Empty State */
 "Empty.Title" = "No hosts to monitor";

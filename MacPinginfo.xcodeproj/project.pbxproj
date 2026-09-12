@@ -9,15 +9,16 @@
 /* Begin PBXBuildFile section */
 		26FC48A0080BC39EB90E1C94 /* PingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6630C5B93BC06FF86A8C824B /* PingViewModel.swift */; };
 		272A21B8FB034DEBD770F063 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53BF53CECCBB72C311918988 /* Assets.xcassets */; };
+		27CF43C62DAACEF040790F2D /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B767C652B3D5DBE899A5EC7E /* DNSResolver.swift */; };
 		30D54FD969370AC98A09B37B /* Localize.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F3484A25F665D54E4650DC /* Localize.swift */; };
 		6A7AE8FD77297CBAE94C8EF8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE13369C0E4B12FDA420AA90 /* Localizable.strings */; };
 		7140856918CA5E480AE856B6 /* HostInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17264DEE65CBCE0D7F118CE4 /* HostInputView.swift */; };
 		72D64B770FBF11D711271A84 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624573F5B76B9B5EFC9A85D5 /* ContentView.swift */; };
 		8812605737F073F6D3954BF8 /* PingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D851446E2D5569189A034D8 /* PingManager.swift */; };
-		B1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift */; };
-		C1D2E3F4A5B6C7D8E9F0A1B /* PingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C6D7E8F9A0B1 /* PingEngine.swift */; };
+		A856F8C4A47D388F8C76A6A1 /* HostValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29ED5D62F14766D1C0208B09 /* HostValidator.swift */; };
 		D1E2EDF47580856574359A63 /* MacPinginfoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277BF04FDC018F187C2DD894 /* MacPinginfoApp.swift */; };
 		D6265F081096F86500EECCFF /* PingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD1B8EBB3645D501AC41C3D /* PingResult.swift */; };
+		D62F4DB3D02624BADC9BFDEB /* PingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0FB4A083532A03F05C40BA /* PingEngine.swift */; };
 		D6CBBE833F17BEE5D2C6CB92 /* ControlBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA87667BA58DF3B5CD0F20D /* ControlBarView.swift */; };
 		E925E2501F6E1151B333F274 /* HostFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB25EF929D7C1DEEB2FCB950 /* HostFormatter.swift */; };
 		EEE1BE87252F8159521B37BD /* PingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4141A3B83BD842828ED2D389 /* PingTableView.swift */; };
@@ -25,8 +26,10 @@
 
 /* Begin PBXFileReference section */
 		17264DEE65CBCE0D7F118CE4 /* HostInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostInputView.swift; sourceTree = "<group>"; };
+		1E0FB4A083532A03F05C40BA /* PingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingEngine.swift; sourceTree = "<group>"; };
 		20BE66D416E22748AB2AEC86 /* MacPinginfo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacPinginfo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		277BF04FDC018F187C2DD894 /* MacPinginfoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacPinginfoApp.swift; sourceTree = "<group>"; };
+		29ED5D62F14766D1C0208B09 /* HostValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostValidator.swift; sourceTree = "<group>"; };
 		4141A3B83BD842828ED2D389 /* PingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingTableView.swift; sourceTree = "<group>"; };
 		53BF53CECCBB72C311918988 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		624573F5B76B9B5EFC9A85D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,8 +38,7 @@
 		811C9229C26F9D4877E7A2CA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		9CEEAB389098C7F6CD8D6FEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9D851446E2D5569189A034D8 /* PingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingManager.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
-		D1E2F3A4B5C6D7E8F9A0B1 /* PingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingEngine.swift; sourceTree = "<group>"; };
+		B767C652B3D5DBE899A5EC7E /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
 		DB25EF929D7C1DEEB2FCB950 /* HostFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostFormatter.swift; sourceTree = "<group>"; };
 		EBA87667BA58DF3B5CD0F20D /* ControlBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBarView.swift; sourceTree = "<group>"; };
 		F8F3484A25F665D54E4650DC /* Localize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localize.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				DB25EF929D7C1DEEB2FCB950 /* HostFormatter.swift */,
+				29ED5D62F14766D1C0208B09 /* HostValidator.swift */,
 				F8F3484A25F665D54E4650DC /* Localize.swift */,
 				6FD1B8EBB3645D501AC41C3D /* PingResult.swift */,
 			);
@@ -118,8 +121,8 @@
 		D4DC16951E755709F6F80B37 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift */,
-				D1E2F3A4B5C6D7E8F9A0B1 /* PingEngine.swift */,
+				B767C652B3D5DBE899A5EC7E /* DNSResolver.swift */,
+				1E0FB4A083532A03F05C40BA /* PingEngine.swift */,
 				9D851446E2D5569189A034D8 /* PingManager.swift */,
 			);
 			path = Services;
@@ -210,12 +213,13 @@
 			files = (
 				72D64B770FBF11D711271A84 /* ContentView.swift in Sources */,
 				D6CBBE833F17BEE5D2C6CB92 /* ControlBarView.swift in Sources */,
-				B1B2C3D4E5F6A7B8C9D0E1F2 /* DNSResolver.swift in Sources */,
+				27CF43C62DAACEF040790F2D /* DNSResolver.swift in Sources */,
 				E925E2501F6E1151B333F274 /* HostFormatter.swift in Sources */,
 				7140856918CA5E480AE856B6 /* HostInputView.swift in Sources */,
-				C1D2E3F4A5B6C7D8E9F0A1B /* PingEngine.swift in Sources */,
+				A856F8C4A47D388F8C76A6A1 /* HostValidator.swift in Sources */,
 				30D54FD969370AC98A09B37B /* Localize.swift in Sources */,
 				D1E2EDF47580856574359A63 /* MacPinginfoApp.swift in Sources */,
+				D62F4DB3D02624BADC9BFDEB /* PingEngine.swift in Sources */,
 				8812605737F073F6D3954BF8 /* PingManager.swift in Sources */,
 				D6265F081096F86500EECCFF /* PingResult.swift in Sources */,
 				EEE1BE87252F8159521B37BD /* PingTableView.swift in Sources */,
@@ -276,7 +280,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -296,7 +300,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -374,7 +378,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -388,7 +392,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = MacPinginfo;

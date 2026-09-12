@@ -36,7 +36,7 @@ struct ContentView: View {
             if engine.results.isEmpty {
                 emptyStateView
             } else {
-                PingTableView(results: engine.results)
+                PingTableView(engine: engine)
                     .padding(0)
             }
         }

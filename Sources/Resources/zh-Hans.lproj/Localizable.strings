@@ -16,6 +16,10 @@
 "Status.Waiting" = "等待中";
 "Status.Online" = "在线";
 "Status.Offline" = "离线";
+"Status.Invalid" = "非法";
+
+/* Host validation */
+"Host.InvalidSuffix" = "（非法）";
 
 /* Table Headers */
 "Table.Status" = "状态";
@@ -27,6 +31,12 @@
 "Table.LastLatency" = "当前 (ms)";
 "Table.AvgLatency" = "平均 (ms)";
 "Table.Error" = "错误";
+"Table.PinHelp" = "将能通的主机固定在顶部";
+
+/* Export */
+"Export.PanelTitle" = "导出 Ping 结果";
+"Export.FailedTitle" = "导出失败";
+"Export.FailedMessage" = "文件保存失败，请检查保存位置后重试。";
 
 /* Empty State */
 "Empty.Title" = "暂无监控主机";
