@@ -12,13 +12,25 @@ struct HostFormatter {
         var result: [String] = []
 
         for host in rawHosts {
-            let normalized = host.lowercased()
-            if !seen.contains(normalized) {
-                seen.insert(normalized)
+            // Deduplicate on a canonical key. Hostnames just fold case, but IPv6
+            // literals have many equivalent textual forms (`2001:db8::1` and
+            // `2001:0db8:0:0:0:0:0:1`), so an address is normalized to its
+            // compressed form for comparison — otherwise the same host is pinged
+            // twice. The user's own text is preserved for display.
+            let key = dedupeKey(host)
+            if !seen.contains(key) {
+                seen.insert(key)
                 result.append(host)
             }
         }
 
         return result.joined(separator: "\n")
+    }
+
+    /// A key under which two entries that mean the same host compare equal.
+    /// Shared with the engine so the Start path dedupes identically to Format.
+    static func dedupeKey(_ host: String) -> String {
+        let lowered = host.lowercased()
+        return HostValidator.canonicalLiteral(lowered) ?? lowered
     }
 }

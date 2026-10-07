@@ -33,7 +33,7 @@ struct PingTableView: View {
                     Rectangle()
                         .fill(Color(NSColor.separatorColor))
                         .frame(height: 1)
-                        .gridCellColumns(9)
+                        .gridCellColumns(11)
                 }
 
                 ForEach(engine.results) { result in
@@ -67,6 +67,8 @@ struct PingTableView: View {
             .gridColumnAlignment(.leading)
 
             headerText("Table.Hostname", alignment: .leading)
+            headerText("Table.Family", alignment: .leading)
+            headerText("Table.ResolvedIP", alignment: .leading)
             headerText("Table.Sent", alignment: .trailing)
             headerText("Table.Received", alignment: .trailing)
             headerText("Table.Lost", alignment: .trailing)
@@ -102,6 +104,12 @@ struct PingTableView: View {
                 .textSelection(.enabled)
                 .gridColumnAlignment(.leading)
 
+            familyText(result.family)
+                .gridColumnAlignment(.leading)
+
+            resolvedIPText(result.resolvedIP)
+                .gridColumnAlignment(.leading)
+
             Text("\(result.sent)")
                 .monospacedDigit()
                 .gridColumnAlignment(.trailing)
@@ -128,6 +136,31 @@ struct PingTableView: View {
 
             errorText(result.lastError)
                 .gridColumnAlignment(.leading)
+        }
+    }
+
+    @ViewBuilder
+    private func familyText(_ family: HostAddressFamily?) -> some View {
+        if let family {
+            Text(family.displayName)
+                .font(.caption)
+                .foregroundStyle(family == .ipv6 ? Color.purple : Color.teal)
+        } else {
+            Text("-")
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    @ViewBuilder
+    private func resolvedIPText(_ ip: String?) -> some View {
+        if let ip {
+            Text(ip)
+                .font(.system(.caption, design: .monospaced))
+                .foregroundStyle(.secondary)
+                .textSelection(.enabled)
+        } else {
+            Text("-")
+                .foregroundStyle(.secondary)
         }
     }
 

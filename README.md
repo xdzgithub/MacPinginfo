@@ -4,7 +4,7 @@
 
 Inspired by PingInfoView on Windows, a macOS-native concurrent multi-host ICMP ping monitoring tool designed for network engineers on Mac.
 
-<img width="800" height="450" alt="image" src="https://github.com/user-attachments/assets/9db17c0a-4fe7-4ba2-b951-3d5b3c876779" />
+<img width="900" alt="MacPinginfo" src="docs/screenshot.png" />
 
 ## Features
 
@@ -13,6 +13,7 @@ Inspired by PingInfoView on Windows, a macOS-native concurrent multi-host ICMP p
 - CSV export support
 - Adjustable ping interval (1s / 2s / 5s / 10s)
 - Automatic DNS resolution
+- IPv6 support: IPv4/IPv6 literals are always auto-detected; a "Resolve hostnames via IPv6" switch makes hostnames resolve AAAA-first with an automatic IPv4 fallback when IPv6 is unreachable
 - macOS-native SwiftUI interface
 
 ## Requirements

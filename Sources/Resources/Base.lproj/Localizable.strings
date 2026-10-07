@@ -12,6 +12,10 @@
 /* Interval */
 "Interval.Label" = "Interval:";
 
+/* Settings */
+"Setting.ResolveHostnamesViaIPv6" = "Resolve hostnames via IPv6";
+"Setting.ResolveHostnamesViaIPv6Help" = "Resolve hostnames to IPv6 (AAAA) first, then fall back to IPv4 (A) automatically if IPv6 is unreachable. IPv4/IPv6 literal addresses are always detected on their own.";
+
 /* Status */
 "Status.Waiting" = "Waiting";
 "Status.Online" = "Online";
@@ -24,6 +28,8 @@
 /* Table Headers */
 "Table.Status" = "Status";
 "Table.Hostname" = "Hostname / IP";
+"Table.Family" = "Family";
+"Table.ResolvedIP" = "Resolved IP";
 "Table.Sent" = "Sent";
 "Table.Received" = "Received";
 "Table.Lost" = "Lost";

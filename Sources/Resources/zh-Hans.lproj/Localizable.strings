@@ -12,6 +12,10 @@
 /* Interval */
 "Interval.Label" = "间隔:";
 
+/* Settings */
+"Setting.ResolveHostnamesViaIPv6" = "域名使用 IPv6 解析";
+"Setting.ResolveHostnamesViaIPv6Help" = "域名优先按 IPv6 (AAAA) 解析；若 IPv6 不通则自动回退 IPv4 (A)。IP 地址始终按自身协议族自动识别。";
+
 /* Status */
 "Status.Waiting" = "等待中";
 "Status.Online" = "在线";
@@ -24,6 +28,8 @@
 /* Table Headers */
 "Table.Status" = "状态";
 "Table.Hostname" = "主机名 / IP";
+"Table.Family" = "协议族";
+"Table.ResolvedIP" = "解析 IP";
 "Table.Sent" = "已发送";
 "Table.Received" = "已接收";
 "Table.Lost" = "丢包数";

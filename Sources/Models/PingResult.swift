@@ -24,6 +24,8 @@ struct PingResult: Identifiable, Equatable {
     var hostname: String
     /// True when the entered host failed syntax validation and is never pinged.
     var isInvalid: Bool = false
+    /// Address family the host resolved to; nil until resolved (or when invalid).
+    var family: HostAddressFamily? = nil
     var resolvedIP: String? = nil
     var status: PingStatus = .waiting
     var sent: Int = 0

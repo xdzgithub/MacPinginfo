@@ -4,7 +4,7 @@
 
 受 Windows 平台 PingInfoView 启发的 macOS 原生并发多主机 ICMP ping 监控工具，专为 Mac 网络工程师打造。
 
-<img width="800" height="450" alt="image" src="https://github.com/user-attachments/assets/9db17c0a-4fe7-4ba2-b951-3d5b3c876779" />
+<img width="900" alt="MacPinginfo" src="docs/screenshot.png" />
 
 
 ## 功能特点
@@ -14,6 +14,7 @@
 - CSV 格式导出
 - 可调节 ping 间隔（1s / 2s / 5s / 10s）
 - 自动 DNS 解析
+- 支持 IPv6：IPv4/IPv6 字面量自动识别；「域名使用 IPv6 解析」开关让域名优先按 AAAA 解析，IPv6 不通时自动回退 IPv4
 - macOS 原生 SwiftUI 界面
 
 ## 系统要求

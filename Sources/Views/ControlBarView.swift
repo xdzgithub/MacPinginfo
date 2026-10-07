@@ -5,6 +5,7 @@ struct ControlBarView: View {
     @ObservedObject var engine: PingEngine
     @Binding var hostInput: String
     @Binding var pingInterval: TimeInterval
+    @Binding var resolveHostnamesViaIPv6: Bool
 
     @State private var exportFailed = false
 
@@ -15,13 +16,22 @@ struct ControlBarView: View {
                     engine.stop()
                 } else {
                     engine.pingInterval = pingInterval
+                    engine.resolveHostnamesViaIPv6 = resolveHostnamesViaIPv6
                     engine.start(hosts: parsedHosts)
                 }
             }) {
-                Label(
-                    engine.isRunning ? L10n.string("Button.Stop") : L10n.string("Button.Start"),
-                    systemImage: engine.isRunning ? "stop.fill" : "play.fill"
-                )
+                // Lay out both labels so the button keeps one width in every
+                // state and locale; only one is visible. Otherwise the play/stop
+                // glyph (and Start/Stop text) width difference shifts the
+                // clear/export/interval controls to its right on each toggle.
+                ZStack {
+                    Label(L10n.string("Button.Start"), systemImage: "play.fill")
+                        .opacity(engine.isRunning ? 0 : 1)
+                        .accessibilityHidden(engine.isRunning)
+                    Label(L10n.string("Button.Stop"), systemImage: "stop.fill")
+                        .opacity(engine.isRunning ? 1 : 0)
+                        .accessibilityHidden(!engine.isRunning)
+                }
             }
             .buttonStyle(.borderedProminent)
             .tint(engine.isRunning ? .red : .green)
@@ -62,6 +72,13 @@ struct ControlBarView: View {
                 .frame(width: 120)
             }
             .fixedSize()
+
+            Toggle(L10n.string("Setting.ResolveHostnamesViaIPv6"), isOn: $resolveHostnamesViaIPv6)
+                .toggleStyle(.switch)
+                .controlSize(.small)
+                .font(.subheadline)
+                .help(L10n.string("Setting.ResolveHostnamesViaIPv6Help"))
+                .fixedSize()
 
             Spacer()
 

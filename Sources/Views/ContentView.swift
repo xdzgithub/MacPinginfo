@@ -4,6 +4,7 @@ struct ContentView: View {
     @StateObject private var engine = PingEngine()
     @State private var hostInput: String = ""
     @AppStorage("savedHosts") private var savedHosts: String = ""
+    @AppStorage("resolveHostnamesViaIPv6") private var resolveHostnamesViaIPv6: Bool = false
     @State private var pingInterval: TimeInterval = 1.0
 
     var body: some View {
@@ -26,7 +27,9 @@ struct ContentView: View {
 
             Divider()
 
-            ControlBarView(engine: engine, hostInput: $hostInput, pingInterval: $pingInterval)
+            ControlBarView(engine: engine, hostInput: $hostInput,
+                           pingInterval: $pingInterval,
+                           resolveHostnamesViaIPv6: $resolveHostnamesViaIPv6)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
                 .background(Color(NSColor.controlBackgroundColor))
