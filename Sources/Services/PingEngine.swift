@@ -1,5 +1,6 @@
 import Foundation
 import Darwin
+import SwiftUI
 
 // MARK: - PingEngine
 //
@@ -131,7 +132,12 @@ final class PingEngine: ObservableObject {
         guard !online.isEmpty, online.count < results.count else { return }
         let reordered = online + results.filter { $0.status != .online }
         if reordered.map(\.id) != results.map(\.id) {
-            results = reordered
+            // Animate only this reorder. Driving the animation here — rather than
+            // a blanket .animation on the table — lets reachable rows slide to
+            // the top on each ping while a Start still appears instantly.
+            withAnimation(.easeInOut(duration: 0.25)) {
+                results = reordered
+            }
         }
     }
 

@@ -22,11 +22,58 @@ struct StatusIndicator: View {
 struct PingTableView: View {
     @ObservedObject var engine: PingEngine
 
-    private let columnSpacing: CGFloat = 18
+    private static let columnSpacing: CGFloat = 14
+    private static let horizontalPadding: CGFloat = 12
+
+    /// The value columns have fixed widths, so changing counters, latency and
+    /// loss never resize anything. The Hostname/IP and Resolved IP columns are
+    /// flexible: they grow to absorb spare width when the window is enlarged and
+    /// shrink toward their floor when it is narrowed, so resizing reflows the
+    /// table rather than clipping it. Their floor is small enough for plain IPv4,
+    /// so an all-IPv4 table is not forced wide; a full IPv6 address still expands
+    /// the column on its own.
+    private enum Col {
+        static let status: CGFloat = 60
+        static let hostnameFloor: CGFloat = 110   // fits an IPv4 literal comfortably
+        static let family: CGFloat = 42
+        static let resolvedIPFloor: CGFloat = 96  // fits an IPv4 literal
+        static let count: CGFloat = 46            // Sent / Received / Lost
+        static let loss: CGFloat = 60
+        static let latency: CGFloat = 54          // Last / Avg
+        static let error: CGFloat = 150
+
+        static let fixedSum: CGFloat =
+            status + family + count * 3 + loss + latency * 2 + error
+    }
+
+    /// Width that fits the given hosts at their full value. Sized from the actual
+    /// content, so a run of plain IPv4 addresses produces a narrow window while a
+    /// full IPv6 address widens the two address columns. Callers size the window
+    /// to this on Start so every column is visible without truncation.
+    static func fitWidth(hostnames: [String], resolvedIPs: [String] = []) -> CGFloat {
+        let hostFont = NSFont.monospacedSystemFont(ofSize: NSFont.systemFontSize, weight: .regular)
+        let ipFont = NSFont.monospacedSystemFont(ofSize: NSFont.preferredFont(forTextStyle: .caption1).pointSize,
+                                                 weight: .regular)
+        func width(_ s: String, _ f: NSFont) -> CGFloat {
+            (s as NSString).size(withAttributes: [.font: f]).width
+        }
+        let hostText = hostnames.map { width($0, hostFont) }.max() ?? 0
+        let ipText = (hostnames + resolvedIPs).map { width($0, ipFont) }.max() ?? 0
+
+        // Header ("主机名 / IP" / "解析 IP") is the floor; a few points of slack.
+        let hostname = max(Col.hostnameFloor, ceil(hostText) + 8)
+        let resolvedIP = max(Col.resolvedIPFloor, ceil(ipText) + 8)
+        let spacing = columnSpacing * 10          // 11 columns → 10 gaps
+        return Col.fixedSum + hostname + resolvedIP + spacing + horizontalPadding * 2
+    }
 
     var body: some View {
-        ScrollView(.vertical) {
-            Grid(alignment: .leading, horizontalSpacing: columnSpacing, verticalSpacing: 4) {
+        // Vertical for rows; horizontal only kicks in when the window is narrower
+        // than the table's minimum, so a cramped window scrolls to the columns
+        // instead of clipping them (at normal sizes the flexible columns fill the
+        // width and no horizontal scroller appears).
+        ScrollView([.horizontal, .vertical]) {
+            Grid(alignment: .leading, horizontalSpacing: Self.columnSpacing, verticalSpacing: 4) {
                 headerRow
 
                 GridRow {
@@ -40,9 +87,8 @@ struct PingTableView: View {
                     dataRow(result)
                 }
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, Self.horizontalPadding)
             .padding(.vertical, 10)
-            .animation(.easeInOut(duration: 0.25), value: engine.results.map(\.id))
         }
         .background(Color(NSColor.textBackgroundColor))
     }
@@ -64,26 +110,31 @@ struct PingTableView: View {
             .buttonStyle(.plain)
             .contentShape(Rectangle())
             .help(L10n.string("Table.PinHelp"))
-            .gridColumnAlignment(.leading)
+            .frame(width: Col.status, alignment: .leading)
 
-            headerText("Table.Hostname", alignment: .leading)
-            headerText("Table.Family", alignment: .leading)
-            headerText("Table.ResolvedIP", alignment: .leading)
-            headerText("Table.Sent", alignment: .trailing)
-            headerText("Table.Received", alignment: .trailing)
-            headerText("Table.Lost", alignment: .trailing)
-            headerText("Table.PacketLoss", alignment: .trailing)
-            headerText("Table.LastLatency", alignment: .trailing)
-            headerText("Table.AvgLatency", alignment: .trailing)
-            headerText("Table.Error", alignment: .leading)
+            flexibleHeaderText("Table.Hostname", minWidth: Col.hostnameFloor)
+            headerText("Table.Family", width: Col.family, align: .leading)
+            flexibleHeaderText("Table.ResolvedIP", minWidth: Col.resolvedIPFloor)
+            headerText("Table.Sent", width: Col.count, align: .trailing)
+            headerText("Table.Received", width: Col.count, align: .trailing)
+            headerText("Table.Lost", width: Col.count, align: .trailing)
+            headerText("Table.PacketLoss", width: Col.loss, align: .trailing)
+            headerText("Table.LastLatency", width: Col.latency, align: .trailing)
+            headerText("Table.AvgLatency", width: Col.latency, align: .trailing)
+            headerText("Table.Error", width: Col.error, align: .leading)
         }
         .font(.caption.weight(.semibold))
         .foregroundStyle(.secondary)
     }
 
-    private func headerText(_ key: String, alignment: HorizontalAlignment) -> some View {
+    private func headerText(_ key: String, width: CGFloat, align: Alignment) -> some View {
         Text(L10n.string(key))
-            .gridColumnAlignment(alignment)
+            .frame(width: width, alignment: align)
+    }
+
+    private func flexibleHeaderText(_ key: String, minWidth: CGFloat) -> some View {
+        Text(L10n.string(key))
+            .frame(minWidth: minWidth, maxWidth: .infinity, alignment: .leading)
     }
 
     // MARK: - Rows
@@ -95,47 +146,54 @@ struct PingTableView: View {
                 Text(result.status.localized)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
             }
-            .gridColumnAlignment(.leading)
+            .frame(width: Col.status, alignment: .leading)
 
+            // Flexible: fills spare width, truncates only when the window is
+            // narrower than a full IPv6 literal.
             Text(result.hostname)
                 .font(.system(.body, design: .monospaced))
                 .foregroundStyle(result.isInvalid ? Color.orange : Color.primary)
                 .textSelection(.enabled)
-                .gridColumnAlignment(.leading)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .help(result.hostname)
+                .frame(minWidth: Col.hostnameFloor, maxWidth: .infinity, alignment: .leading)
 
             familyText(result.family)
-                .gridColumnAlignment(.leading)
+                .frame(width: Col.family, alignment: .leading)
 
             resolvedIPText(result.resolvedIP)
-                .gridColumnAlignment(.leading)
+                .frame(minWidth: Col.resolvedIPFloor, maxWidth: .infinity, alignment: .leading)
 
             Text("\(result.sent)")
                 .monospacedDigit()
-                .gridColumnAlignment(.trailing)
+                .frame(width: Col.count, alignment: .trailing)
 
             Text("\(result.received)")
                 .monospacedDigit()
-                .gridColumnAlignment(.trailing)
+                .frame(width: Col.count, alignment: .trailing)
 
             Text("\(result.lost)")
                 .monospacedDigit()
                 .foregroundStyle(result.lost > 0 ? Color.orange : Color.primary)
-                .gridColumnAlignment(.trailing)
+                .frame(width: Col.count, alignment: .trailing)
 
             Text(String(format: "%.1f%%", result.packetLoss))
                 .monospacedDigit()
                 .foregroundStyle(packetLossColor(result.packetLoss))
-                .gridColumnAlignment(.trailing)
+                .frame(width: Col.loss, alignment: .trailing)
 
             latencyText(result.lastLatency)
-                .gridColumnAlignment(.trailing)
+                .frame(width: Col.latency, alignment: .trailing)
 
             latencyText(result.averageLatency)
-                .gridColumnAlignment(.trailing)
+                .frame(width: Col.latency, alignment: .trailing)
 
             errorText(result.lastError)
-                .gridColumnAlignment(.leading)
+                .frame(width: Col.error, alignment: .leading)
         }
     }
 
@@ -158,6 +216,9 @@ struct PingTableView: View {
                 .font(.system(.caption, design: .monospaced))
                 .foregroundStyle(.secondary)
                 .textSelection(.enabled)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .help(ip)
         } else {
             Text("-")
                 .foregroundStyle(.secondary)
@@ -181,6 +242,9 @@ struct PingTableView: View {
             Text(error)
                 .font(.caption)
                 .foregroundStyle(.red)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .help(error)
         } else {
             Text("-")
                 .foregroundStyle(.secondary)

@@ -18,6 +18,7 @@ struct ControlBarView: View {
                     engine.pingInterval = pingInterval
                     engine.resolveHostnamesViaIPv6 = resolveHostnamesViaIPv6
                     engine.start(hosts: parsedHosts)
+                    fitWindowToTable()
                 }
             }) {
                 // Lay out both labels so the button keeps one width in every
@@ -115,6 +116,23 @@ struct ControlBarView: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMdd_HHmmss"
         return formatter.string(from: Date())
+    }
+
+    /// Set the window's width to fit the table's current content, so a Start
+    /// always shows every column (full addresses included) without horizontal
+    /// scrolling — narrow for all-IPv4 hosts, wider when IPv6 addresses appear.
+    /// Deferred one runloop turn so the new rows are laid out first.
+    private func fitWindowToTable() {
+        DispatchQueue.main.async {
+            guard let window = NSApp.keyWindow ?? NSApp.windows.first else { return }
+            let hostnames = engine.results.filter { !$0.isInvalid }.map(\.hostname)
+            let resolved = engine.results.compactMap(\.resolvedIP)
+            let target = PingTableView.fitWidth(hostnames: hostnames, resolvedIPs: resolved)
+            var frame = window.frame
+            guard abs(frame.size.width - target) > 1 else { return }
+            frame.size.width = target
+            window.setFrame(frame, display: true)
+        }
     }
 
     private var intervalOptions: [(String, TimeInterval)] {
