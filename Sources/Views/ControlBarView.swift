@@ -6,6 +6,10 @@ struct ControlBarView: View {
     @Binding var hostInput: String
     @Binding var pingInterval: TimeInterval
     @Binding var resolveHostnamesViaIPv6: Bool
+    /// Formats the editor's text and returns the hosts to ping. It is the same
+    /// work the "Format" button does, so Start pings exactly what that button
+    /// would show — and the result is written back through the saved binding.
+    var prepareHosts: () -> [String]
 
     @State private var exportFailed = false
 
@@ -15,9 +19,14 @@ struct ControlBarView: View {
                 if engine.isRunning {
                     engine.stop()
                 } else {
+                    // Clean and dedupe before pinging, exactly like the Format
+                    // button, so pasted invisible characters or full-width
+                    // punctuation can't turn a correct-looking row into an
+                    // invalid host.
+                    let hosts = prepareHosts()
                     engine.pingInterval = pingInterval
                     engine.resolveHostnamesViaIPv6 = resolveHostnamesViaIPv6
-                    engine.start(hosts: parsedHosts)
+                    engine.start(hosts: hosts)
                     fitWindowToTable()
                 }
             }) {
@@ -142,13 +151,5 @@ struct ControlBarView: View {
             (L10n.string("Interval.Option5s"), 5.0),
             (L10n.string("Interval.Option10s"), 10.0),
         ]
-    }
-
-    private var parsedHosts: [String] {
-        let separators = CharacterSet(charactersIn: ",\n")
-        return hostInput
-            .components(separatedBy: separators)
-            .map { $0.trimmingCharacters(in: .whitespaces) }
-            .filter { !$0.isEmpty }
     }
 }

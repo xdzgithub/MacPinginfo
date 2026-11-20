@@ -51,8 +51,13 @@ final class PingEngine: ObservableObject {
         // hostname, so a repeated entry would overwrite the dictionary slot and
         // orphan the earlier process (never terminated by stop()). Use the same
         // canonical key as Format so equivalent IPv6 spellings also collapse.
+        // Sanitize first: callers other than the control bar may hand us raw
+        // pasted text, and an invisible character would read as an invalid host.
         var seen = Set<String>()
-        let uniqueHosts = hosts.filter { seen.insert(HostFormatter.dedupeKey($0)).inserted }
+        let uniqueHosts = hosts
+            .map { HostFormatter.sanitize($0) }
+            .filter { !$0.isEmpty }
+            .filter { seen.insert(HostFormatter.dedupeKey($0)).inserted }
 
         let invalidSuffix = L10n.string("Host.InvalidSuffix")
         var validHosts: [String] = []

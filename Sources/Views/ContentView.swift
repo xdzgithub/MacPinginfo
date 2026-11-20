@@ -10,10 +10,7 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
-                HostInputView(text: Binding(
-                    get: { hostInput },
-                    set: { hostInput = $0; savedHosts = $0 }
-                )) {
+                HostInputView(text: hostText) {
                     formatInput()
                 }
             }
@@ -27,9 +24,10 @@ struct ContentView: View {
 
             Divider()
 
-            ControlBarView(engine: engine, hostInput: $hostInput,
+            ControlBarView(engine: engine, hostInput: hostText,
                            pingInterval: $pingInterval,
-                           resolveHostnamesViaIPv6: $resolveHostnamesViaIPv6)
+                           resolveHostnamesViaIPv6: $resolveHostnamesViaIPv6,
+                           prepareHosts: prepareHosts)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
                 .background(Color(NSColor.controlBackgroundColor))
@@ -64,7 +62,27 @@ struct ContentView: View {
         .background(Color(NSColor.textBackgroundColor))
     }
 
+    private var hostText: Binding<String> {
+        Binding(
+            get: { hostInput },
+            set: { hostInput = $0; savedHosts = $0 }
+        )
+    }
+
     private func formatInput() {
-        hostInput = HostFormatter.format(hostInput)
+        hostText.wrappedValue = HostFormatter.format(hostInput)
+    }
+
+    /// Run the same formatting the Format button applies, then hand back the
+    /// resulting hosts. Writing through `hostText` is what makes the cleanup
+    /// stick: `savedHosts` is updated too, so the next launch keeps the cleaned
+    /// list rather than the original dirty paste.
+    private func prepareHosts() -> [String] {
+        let hosts = HostFormatter.parse(hostInput)
+        let cleaned = hosts.joined(separator: "\n")
+        if !cleaned.isEmpty, cleaned != hostInput {
+            hostText.wrappedValue = cleaned
+        }
+        return hosts
     }
 }
